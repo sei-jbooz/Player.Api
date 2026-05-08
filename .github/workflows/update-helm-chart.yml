@@ -1,18 +1,24 @@
-name: Update Helm Chart
+  name: Update Helm Chart
 
-on:
-  release:
-    types: [published]
+  on:
+    release:
+      types: [published]
 
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Update Helm chart
-        uses: cmu-sei/Crucible-Github-Actions/actions/update-helm-chart@update-helm-chart-v2
-        with:
-          app_name: Player API
-          github_app_id: ${{ secrets.CRUCIBLE_HELM_UPDATE_APP_ID }}
-          github_app_private_key: ${{ secrets.CRUCIBLE_HELM_UPDATE_PRIVATE_KEY }}
-          chart_file: charts/player/charts/player-api/Chart.yaml
-          parent_chart_file: charts/player/Chart.yaml
+  jobs:
+    update:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out Player.Api (needed for git tag history)
+          uses: actions/checkout@v6
+          with:
+            fetch-depth: 0
+        - name: Update Helm chart
+          uses: sei-jbooz/Crucible-Github-Actions/actions/update-helm-chart@appsettings-sync
+          with:
+            app_name: Player API
+            github_app_id: ${{ secrets.CRUCIBLE_HELM_UPDATE_APP_ID }}
+            github_app_private_key: ${{ secrets.CRUCIBLE_HELM_UPDATE_PRIVATE_KEY }}
+            chart_file: charts/player/charts/player-api/Chart.yaml
+            parent_chart_file: charts/player/Chart.yaml
+            settings_file: Player.Api/appsettings.json
+            settings_file_kind: dotnet-appsettings
