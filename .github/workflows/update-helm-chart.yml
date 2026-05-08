@@ -8,8 +8,8 @@
     update:
       runs-on: ubuntu-latest
       steps:
-        - name: Check out Player.Api (needed for git tag history)
-          uses: actions/checkout@v6
+        - name: Check out Player.Api (needed for tag history)
+          uses: actions/checkout@v4
           with:
             fetch-depth: 0
         - name: Update Helm chart
@@ -20,5 +20,6 @@
             github_app_private_key: ${{ secrets.CRUCIBLE_HELM_UPDATE_PRIVATE_KEY }}
             chart_file: charts/player/charts/player-api/Chart.yaml
             parent_chart_file: charts/player/Chart.yaml
+            helm_chart_repo: sei-jbooz/helm-charts
             settings_file: Player.Api/appsettings.json
             settings_file_kind: dotnet-appsettings
